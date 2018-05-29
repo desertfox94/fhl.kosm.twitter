@@ -25,7 +25,7 @@ public class App {
 		Twitter twitter = new TwitterFactory().getInstance();
 		String tag = "elonmusk";
 		try {
-			Query query = new Query(tag).count(50);
+			Query query = new Query("#"+tag).count(2);
 			QueryResult result;
 			StringBuilder builder = new StringBuilder();
 			List<Status> allTweets = new LinkedList<>();
