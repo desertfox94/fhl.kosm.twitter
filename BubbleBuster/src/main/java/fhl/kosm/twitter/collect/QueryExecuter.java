@@ -36,7 +36,7 @@ public class QueryExecuter {
 				}
 			}
 		} while (result == null);
-		return null;
+		return result;
 	}
 
 	private void handleRateLimitation() {
