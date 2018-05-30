@@ -1,4 +1,4 @@
-package fhl.kosm.twitter;
+package fhl.kosm.twitter.model;
 
 import java.util.HashMap;
 import java.util.HashSet;

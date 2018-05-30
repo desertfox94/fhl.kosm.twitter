@@ -1,10 +1,12 @@
-package fhl.kosm.twitter;
+package fhl.kosm.twitter.analyse;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
+import fhl.kosm.twitter.collect.HashtagCollector;
+import fhl.kosm.twitter.model.TweetRelation;
 import twitter4j.TwitterException;
 
 public class HashtagAnalyser {

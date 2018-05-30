@@ -1,4 +1,4 @@
-package fhl.kosm.twitter;
+package fhl.kosm.twitter.collect;
 
 import java.io.IOException;
 import java.util.Collections;
@@ -6,9 +6,11 @@ import java.util.List;
 
 import com.google.gson.Gson;
 
+import fhl.kosm.twitter.FileUtil;
+import fhl.kosm.twitter.model.TweetRelation;
 import twitter4j.Status;
 
-public class TestData {
+public class Datastore {
 
 	public static List<TweetRelation> load(String name) {
 		String json = FileUtil.readFileInCurrentDirectory(name);
