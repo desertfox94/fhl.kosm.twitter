@@ -18,7 +18,7 @@ public class TweetCollector extends QueryExecuter {
 
     private static final String HASHTAG = "#";
 
-    private int count = 50;
+    private int count = 35;
 
     TweetService tweetService = new TweetService();
 

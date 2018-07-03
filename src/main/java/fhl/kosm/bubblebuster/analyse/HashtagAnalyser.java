@@ -39,11 +39,11 @@ public class HashtagAnalyser {
 		}
 		AnalyzationResult result = new AnalyzationResult();
 		for (Hashtag h1 : hashtags) {
-			try {
-				result.addPathOfHashtagWordcloud(createWordcloud(h1));
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+//			try {
+//				result.addPathOfHashtagWordcloud(createWordcloud(h1));
+//			} catch (IOException e) {
+//				e.printStackTrace();
+//			}
 			for (Hashtag h2 : hashtags) {
 				if (h1 == h2)
 					continue;
@@ -58,11 +58,11 @@ public class HashtagAnalyser {
 		hashtag.relations().entrySet().forEach(e -> wordFrequencies.add(new WordFrequency(e.getKey(), e.getValue().intValue())));
 
 		final Dimension dimension = new Dimension(944, 768);
-		final WordCloud wordCloud = new WordCloud(dimension, CollisionMode.PIXEL_PERFECT);
+		final WordCloud wordCloud = new WordCloud(dimension, CollisionMode.RECTANGLE);
 		wordCloud.setPadding(2);
 			wordCloud.setBackground(new PixelBoundryBackground(FileUtil.fileInCurrentDirectory("src\\main\\resources\\Twitter_Bird.png")));
 		wordCloud.setColorPalette(new ColorPalette(new Color(0x4055F1), new Color(0x408DF1), new Color(0x40AAF1), new Color(0x40C5F1), new Color(0x40D3F1), new Color(0xFFFFFF)));
-		wordCloud.setFontScalar(new LinearFontScalar(30, 100));
+		wordCloud.setFontScalar(new LinearFontScalar(20, 50));
 		wordCloud.build(wordFrequencies);
 		File file = FileUtil.fileInCurrentDirectory("src\\main\\resources\\static\\clouds\\" + hashtag + ".png");
 		wordCloud.writeToFile(file.getPath());

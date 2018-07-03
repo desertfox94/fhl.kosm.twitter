@@ -26,7 +26,7 @@ public class RecursiveTweetCollector extends TweetCollector {
     }
 
     private boolean notMarkedOrLoaded(String tag) {
-        return tweetService.get(tag) == null;
+        return tweetService.get(tag) == null && !remaining.contains(tag);
     }
 
     @Override
@@ -34,8 +34,10 @@ public class RecursiveTweetCollector extends TweetCollector {
         return status -> {
             Tweet tweet = tweetService.update(status);
             tweet.getHashtags().forEach(tag ->{
-                if (notMarkedOrLoaded(tag))
+                if (notMarkedOrLoaded(tag)) {
+                    System.out.println("mark: " + tag);
                     remaining.add(tag);
+                }
             });
             write(tweet);
         };

@@ -6,8 +6,8 @@
 </head>
 <body>
 <!--/*@thymesVar id="result" type="java.util.List<String>"*/-->
-<img width="944" height="768"  th:each="r : ${result}"
-   th:src="${r}">
+<p th:each="r : ${result}"
+   th:text="${r}"></p>
 </body>
 </body>
 </html>

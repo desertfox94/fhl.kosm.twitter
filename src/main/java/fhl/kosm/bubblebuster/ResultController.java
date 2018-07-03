@@ -26,8 +26,8 @@ public class ResultController {
         List<String> relations = new LinkedList<>();
         AnalyzationResult result = analyser.relations(selectedHashtags.split(","));
         if (result != null) {
-//            result.getPathOfHashtagWordclouds().forEach(r -> relations.add(String.format("%.4f %s -> %s : %s", r.calc(), r.from().toString(), r.to().toString(), r.intersection().toString())));
-            model.addAttribute("result", result.getPathOfHashtagWordclouds());
+            result.getRelations().forEach(r -> relations.add(String.format("%.4f %s -> %s : %s", r.calc(), r.from().toString(), r.to().toString(), r.intersection().toString())));
+            model.addAttribute("result", relations);
         }
         return "result";
     }

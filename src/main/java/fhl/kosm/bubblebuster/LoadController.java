@@ -27,6 +27,10 @@ public class LoadController {
             return null;
         }
 
+//        new Thread(() -> {
+//            new TweetCollector().loadHashtags(selectedHashtags.split(","));
+//        }).run();
+
         new Thread(() -> {
             new RecursiveTweetCollector().loadHashtags(null, selectedHashtags.split(","));
         }).run();
