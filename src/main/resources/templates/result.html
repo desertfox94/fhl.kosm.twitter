@@ -1,0 +1,13 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Getting Started: Serving Web Content</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+<!--/*@thymesVar id="result" type="java.util.List<String>"*/-->
+<img width="944" height="768"  th:each="r : ${result}"
+   th:src="${r}">
+</body>
+</body>
+</html>
