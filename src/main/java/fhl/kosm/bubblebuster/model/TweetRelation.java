@@ -5,40 +5,59 @@ import java.util.Set;
 
 public class TweetRelation {
 
-	private Hashtag from;
+    private Hashtag from;
 
-	private Hashtag to;
+    private Hashtag to;
 
-	private Set<String> intersection;
+    private String wordcloud;
 
-	public TweetRelation(Hashtag from, Hashtag to) {
-		this.from = from;
-		this.to = to;
-	}
-	
-	public Set<String> intersection() {
-		if (intersection != null) {
-			return intersection;
-		}
-		intersection = new HashSet<>();
-		for (String tag : from.relatedHashtags()) {
-			if (to.relatedHashtags().contains(tag)) {
-				intersection.add(tag);
-			}
-		}
-		return intersection;
-	}
-	
-	public double calc() {
-		return intersection().size() / (double) from.relationsCount();
-	}
+    private Set<String> intersection;
 
-	public Hashtag from() {
-		return from;
-	}
+    public TweetRelation(Hashtag from, Hashtag to) {
+        this.from = from;
+        this.to = to;
+    }
 
-	public Hashtag to() {
-		return to;
-	}
-	
+    public Set<String> intersection() {
+        if (intersection != null) {
+            return intersection;
+        }
+        intersection = new HashSet<>();
+        for (String tag : from.relatedHashtags()) {
+            if (to.relatedHashtags().contains(tag)) {
+                intersection.add(tag);
+            }
+        }
+        return intersection;
+    }
+
+    public double intersectionPercentage() {
+        return intersection().size() / (double) from.relationsCount();
+    }
+
+    public double intersectionPercentageInverted() {
+        return 1 - intersectionPercentage();
+    }
+
+    public Hashtag from() {
+        return from;
+    }
+
+    public Hashtag to() {
+        return to;
+    }
+
+    public String getWordcloud() {
+        return wordcloud;
+    }
+
+    public void setWordcloud(String wordcloud) {
+        this.wordcloud = wordcloud;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("%.4f %s -> %s : %s", intersectionPercentage(), from().toString(), to().toString(), intersection().toString());
+    }
+
 }

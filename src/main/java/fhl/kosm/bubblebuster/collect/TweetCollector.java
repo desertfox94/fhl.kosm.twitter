@@ -24,7 +24,7 @@ public class TweetCollector extends QueryExecuter {
 
     private BufferedWriter writer;
 
-    private ResultType type = ResultType.popular;
+    private ResultType type = ResultType.mixed;
 
     public List<Tweet> loadHashtags(String[] hashtags) {
         return loadHashtags(System.out, hashtags);
@@ -50,6 +50,7 @@ public class TweetCollector extends QueryExecuter {
     }
 
     protected void loadByHashtag(String tag) throws TwitterException {
+        tag = tag.trim();
         if (!tag.startsWith(HASHTAG)) {
             tag = HASHTAG + tag;
         }

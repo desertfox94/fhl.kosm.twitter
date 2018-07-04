@@ -2,7 +2,11 @@ package fhl.kosm.bubblebuster;
 
 import fhl.kosm.bubblebuster.analyse.HashtagAnalyser;
 import fhl.kosm.bubblebuster.model.AnalyzationResult;
+import fhl.kosm.bubblebuster.model.AnalyzedHashtag;
 import fhl.kosm.bubblebuster.model.TweetRelation;
+import fhl.kosm.bubblebuster.repositories.HashtagRepository;
+import fhl.kosm.bubblebuster.repositories.TweetRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,19 +20,23 @@ import java.util.List;
 @Controller
 public class ResultController {
 
+    private HashtagAnalyser analyser;
+
+    @Autowired
+    private HashtagRepository repository;
+
     @GetMapping("/analyze")
     public String analyseHashtags(@RequestParam String selectedHashtags, Model model) {
+        if (analyser == null) {
+            analyser = new HashtagAnalyser(repository);
+        }
         if (selectedHashtags == null || selectedHashtags.trim().isEmpty()) {
             return null;
         }
         System.out.println(selectedHashtags);
-        HashtagAnalyser analyser = new HashtagAnalyser();
         List<String> relations = new LinkedList<>();
-        AnalyzationResult result = analyser.relations(selectedHashtags.split(","));
-        if (result != null) {
-            result.getRelations().forEach(r -> relations.add(String.format("%.4f %s -> %s : %s", r.calc(), r.from().toString(), r.to().toString(), r.intersection().toString())));
-            model.addAttribute("result", relations);
-        }
+        List<AnalyzedHashtag> result = analyser.relations(selectedHashtags.split(","));
+        model.addAttribute("hashtags", result);
         return "result";
     }
 

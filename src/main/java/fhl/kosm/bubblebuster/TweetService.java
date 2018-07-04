@@ -3,9 +3,13 @@ package fhl.kosm.bubblebuster;
 import com.mongodb.MongoClient;
 import fhl.kosm.bubblebuster.model.Hashtag;
 import fhl.kosm.bubblebuster.model.Tweet;
+import fhl.kosm.bubblebuster.repositories.TweetRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.stereotype.Component;
 import twitter4j.HashtagEntity;
 import twitter4j.Status;
 import twitter4j.URLEntity;
@@ -16,6 +20,9 @@ import static org.springframework.data.mongodb.core.query.Criteria.where;
 
 public class TweetService {
 
+    @Autowired
+    private TweetRepository repository;
+
     MongoOperations mongoOps = new MongoTemplate(new MongoClient(), "twitter");
 
     public List<Hashtag> all() {
@@ -23,7 +30,7 @@ public class TweetService {
     }
 
     public Set<Tweet> tweetsOf(String tag) {
-        Hashtag hashtag = mongoOps.findOne(new Query(where("tag").is(tag.toLowerCase())), Hashtag.class);
+        Hashtag hashtag = mongoOps.findOne(new Query(where("tag").is(tag.trim().toLowerCase())), Hashtag.class);
         if (tag == null) {
             return Collections.emptySet();
         }
@@ -39,6 +46,7 @@ public class TweetService {
     }
 
     public Hashtag get(String tag) {
+        System.out.println("repo: " + repository);
         return mongoOps.findOne(new Query(where("_id").is(tag.toLowerCase())), Hashtag.class);
     }
 
@@ -51,6 +59,7 @@ public class TweetService {
         if (tweet == null) {
             tweet = create(status);
             mongoOps.save(tweet);
+            mongoOps.save(status);
         }
         return tweet;
     }

@@ -3,10 +3,13 @@ package fhl.kosm.bubblebuster.model;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
 public class AnalyzationResult {
+
+    private List<Hashtag> hashtags = new ArrayList<>();
 
     private List<TweetRelation> relations = new LinkedList<>();
 
@@ -24,7 +27,17 @@ public class AnalyzationResult {
         return pathOfHashtagWordclouds;
     }
 
+    private String embedded;
+
     public List<TweetRelation> getRelations() {
         return relations;
+    }
+
+    public String getEmbedded() {
+        return embedded;
+    }
+
+    public void setEmbedded(String embedded) {
+        this.embedded = embedded;
     }
 }

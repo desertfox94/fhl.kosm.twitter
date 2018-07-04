@@ -64,4 +64,7 @@ public class Hashtag {
         return tweets.add(tweet);
     }
 
+    public String getDisplayName() {
+        return displayName;
+    }
 }

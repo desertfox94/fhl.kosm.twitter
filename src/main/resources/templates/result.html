@@ -5,9 +5,14 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 <body>
-<!--/*@thymesVar id="result" type="java.util.List<String>"*/-->
-<p th:each="r : ${result}"
-   th:text="${r}"></p>
+<!--/*@thymesVar id="hashtags" type="java.util.List<fhl.kosm.bubblebuster.model.AnalyzedHashtag>"*/-->
+<div th:each="hashtag : ${hashtags}">
+    <h3 th:text="${hashtag.getHashtag().getDisplayName()}"></h3>
+    <p th:each="rel : ${hashtag.getRelations()}" th:text="${rel.toString()}"></p>
+    <img width="472" height="384" th:src="${hashtag.getWordcloud()}">
+    <div th:each="embedded : ${hashtag.getEmbeddedTweets()}" th:remove="tag" th:utext="${embedded}"></div>
+</div>
+
 </body>
 </body>
 </html>
