@@ -1,6 +1,8 @@
 package fhl.kosm.bubblebuster.collect;
 
+import fhl.kosm.bubblebuster.DataCleanUpService;
 import fhl.kosm.bubblebuster.TweetService;
+import fhl.kosm.bubblebuster.model.Hashtag;
 import fhl.kosm.bubblebuster.model.Tweet;
 import twitter4j.Query;
 import twitter4j.Query.ResultType;
@@ -11,6 +13,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.util.*;
+import java.util.function.Consumer;
 
 public class TweetCollector extends QueryExecuter {
 
@@ -20,11 +23,15 @@ public class TweetCollector extends QueryExecuter {
 
     private int count = 35;
 
-    TweetService tweetService = new TweetService();
+    protected TweetService tweetService;
 
     private BufferedWriter writer;
 
     private ResultType type = ResultType.mixed;
+
+    public TweetCollector(TweetService service) {
+        tweetService = service;
+    }
 
     public List<Tweet> loadHashtags(String[] hashtags) {
         return loadHashtags(System.out, hashtags);

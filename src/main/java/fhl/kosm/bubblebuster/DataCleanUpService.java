@@ -3,32 +3,30 @@ package fhl.kosm.bubblebuster;
 import com.mongodb.MongoClient;
 import fhl.kosm.bubblebuster.model.Hashtag;
 import fhl.kosm.bubblebuster.model.Tweet;
-import fhl.kosm.bubblebuster.repositories.HashtagRepository;
 import fhl.kosm.bubblebuster.repositories.TweetRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.stereotype.Component;
 import twitter4j.HashtagEntity;
 import twitter4j.Status;
+import twitter4j.URLEntity;
 
 import java.util.*;
-import java.util.function.Consumer;
 
-public class TweetService {
+import static org.springframework.data.mongodb.core.query.Criteria.where;
 
-    private HashtagRepository hashtagRepository;
+public class DataCleanUpService {
 
-    private TweetRepository tweetRepository;
+    Map<String, Tweet> tweets = new HashMap<>();
 
-    private MongoTemplate mongo = new MongoTemplate(new MongoClient("localhost"), "twitter");
-
-    private Optional<Consumer<Hashtag>> updatedHashtag = Optional.empty();
-
-    public TweetService(HashtagRepository hashtagRepository, TweetRepository tweetRepository) {
-        this.hashtagRepository =hashtagRepository;
-        this.tweetRepository = tweetRepository;
-    }
+    Map<String, Hashtag> hashtags = new HashMap<>();
 
     public Set<Tweet> tweetsOf(String tag) {
-        Hashtag hashtag =null;
+//        Hashtag hashtag = mongoOps.findOne(new Query(where("tag").is(tag.trim().toLowerCase())), Hashtag.class);
+        Hashtag hashtag = hashtags.get(tag.toLowerCase());
         if (hashtag == null) {
             return Collections.emptySet();
         }
@@ -44,21 +42,18 @@ public class TweetService {
     }
 
     public Hashtag get(String tag) {
-        Optional<Hashtag> opt = hashtagRepository.findById(tag.toLowerCase());
-        return opt.isPresent() ? opt.get() : null;
+        return hashtags.get(tag.toLowerCase());
     }
 
     private Tweet byId(long id) {
-        Optional<Tweet> tweet = tweetRepository.findById(id);
-        return tweet.isPresent() ? tweet.get() : null;
+        return tweets.get("" + id);
     }
 
     public Tweet update(Status status) {
         Tweet tweet = byId(status.getId());
         if (tweet == null) {
             tweet = create(status);
-            tweetRepository.save(tweet);
-            mongo.save(status);
+            tweets.put("" + tweet.getId(), tweet);
         }
         return tweet;
     }
@@ -71,7 +66,7 @@ public class TweetService {
         updateHashtags(tweet);
         return tweet;
     }
-    
+
     private List<String> toStringList(HashtagEntity[] hashtags) {
         if (hashtags.length == 0) {
             return Collections.emptyList();
@@ -88,28 +83,20 @@ public class TweetService {
         Hashtag related;
         List<String> tags = tweet.getHashtags();
         for (int i = 0; i < tags.size() - 1; i++) {
-            tag = getOrCreate(tags.get(i), tweet);
             for (int j = i + 1; j < tags.size(); j++) {
+                tag = getOrCreate(tags.get(i), tweet);
                 related = getOrCreate(tags.get(j), tweet);
                 if (tag.equals(related)) {
                     continue;
                 }
-
+                // we can do some because the tweets are stored in a hashset.
+                // tweets override the hashfunction with the hash of their id.
+                tag.addTweet(tweet);
+                related.addTweet(tweet);
+                tag.addRelation(related);
+                related.addRelation(tag);
             }
         }
-    }
-
-    private void updatedHashtag(Tweet tweet, final Hashtag tag, final Hashtag related) {
-        // we can do some because the tweets are stored in a hashset.
-        // tweets override the hashfunction with the hash of their id.
-        tag.addTweet(tweet);
-        related.addTweet(tweet);
-        tag.addRelation(related);
-        related.addRelation(tag);
-        hashtagRepository.save(tag);
-        hashtagRepository.save(related);
-        updatedHashtag.ifPresent(u -> u.accept(tag));
-        updatedHashtag.ifPresent(u -> u.accept(related));
     }
 
     private Hashtag getOrCreate(String tag, Tweet tweet) {
@@ -123,12 +110,14 @@ public class TweetService {
     private Hashtag create(Tweet tweet, String tag) {
         Hashtag hashtag = new Hashtag(tag);
         hashtag.addTweet(tweet);
-        hashtagRepository.save(hashtag);
+        hashtags.put(hashtag.getTag(), hashtag);
         return hashtag;
     }
 
-    public void setUpdatedHashtag(Consumer<Hashtag> consumer) {
-        updatedHashtag = Optional.of(consumer);
+    public void save() {
+        MongoTemplate mongoOps = new MongoTemplate(new MongoClient(), "twitter");
+        hashtags.values().forEach(mongoOps::save);
+        tweets.values().forEach(mongoOps::save);
     }
 
 }

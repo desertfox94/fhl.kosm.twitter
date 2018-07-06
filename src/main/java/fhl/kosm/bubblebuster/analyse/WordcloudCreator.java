@@ -3,6 +3,8 @@ package fhl.kosm.bubblebuster.analyse;
 import com.kennycason.kumo.CollisionMode;
 import com.kennycason.kumo.WordCloud;
 import com.kennycason.kumo.WordFrequency;
+import com.kennycason.kumo.bg.Background;
+import com.kennycason.kumo.bg.CircleBackground;
 import com.kennycason.kumo.bg.PixelBoundryBackground;
 import com.kennycason.kumo.font.scale.LinearFontScalar;
 import com.kennycason.kumo.nlp.FrequencyAnalyzer;
@@ -15,7 +17,9 @@ import javax.xml.bind.DatatypeConverter;
 import java.awt.*;
 import java.awt.image.*;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -32,15 +36,12 @@ public class WordcloudCreator {
 
     public WordCloud create(Hashtag hashtag) {
             List<WordFrequency> wordFrequencies = new ArrayList<>(hashtag.relations().size());
-            hashtag.relations().entrySet().forEach(e -> wordFrequencies.add(new WordFrequency(e.getKey(), e.getValue().intValue())));
+
+            hashtag.relationsInverted().entrySet().forEach(e -> wordFrequencies.add(new WordFrequency(e.getKey(), e.getValue().intValue())));
             final Dimension dimension = new Dimension(WIDTH, HEIGHT);
             final WordCloud wordCloud = new WordCloud(dimension, CollisionMode.PIXEL_PERFECT);
             wordCloud.setPadding(2);
-            try {
-                wordCloud.setBackground(new PixelBoundryBackground(FileUtil.fileInCurrentDirectory("src\\main\\resources\\Twitter_Bird.png")));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            wordCloud.setBackground(backgroundFor(hashtag));
             wordCloud.setColorPalette(COLOR_PALETTE);
             wordCloud.setFontScalar(new LinearFontScalar(30, 80));
             FrequencyAnalyzer frequencyAnalyzer = new FrequencyAnalyzer();
@@ -48,6 +49,21 @@ public class WordcloudCreator {
             wordCloud.setBackgroundColor(new Color(0,0,0,0));
             wordCloud.build(frequencyAnalyzer.loadWordFrequencies(createWordFrequencies(hashtag)));
             return wordCloud;
+    }
+
+    private Background backgroundFor(Hashtag hashtag) {
+        Background background = null;
+        if (hashtag.relatedHashtags().size() > 60) {
+            try {
+                background = new PixelBoundryBackground(FileUtil.fileInCurrentDirectory("src\\main\\resources\\Twitter_Bird.png"));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        if (background == null) {
+            background = new CircleBackground(200);
+        }
+        return background;
     }
 
     private List<WordFrequency> createWordFrequencies(Hashtag hashtag) {
@@ -58,8 +74,21 @@ public class WordcloudCreator {
     }
 
     public String asBase64(Hashtag hashtag) {
+        File file = new File("D:\\dev\\data\\clouds\\inverted\\" + hashtag.getTag());
+        if (file.exists()) {
+            try {
+                return new String(Files.readAllBytes(file.toPath()));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
         return asBase64(create(hashtag).getBufferedImage());
     }
+
+    public String createAsBase64(Hashtag hashtag) {
+        return asBase64(create(hashtag).getBufferedImage());
+    }
+
 
     private String asBase64(BufferedImage image) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();

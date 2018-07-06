@@ -1,27 +1,12 @@
 package fhl.kosm.bubblebuster.analyse;
 
-import com.kennycason.kumo.CollisionMode;
-import com.kennycason.kumo.WordCloud;
-import com.kennycason.kumo.WordFrequency;
-import com.kennycason.kumo.bg.PixelBoundryBackground;
-import com.kennycason.kumo.font.scale.LinearFontScalar;
-import com.kennycason.kumo.palette.ColorPalette;
-import fhl.kosm.bubblebuster.FileUtil;
-import fhl.kosm.bubblebuster.TweetService;
 import fhl.kosm.bubblebuster.model.*;
 import fhl.kosm.bubblebuster.repositories.HashtagRepository;
-import fhl.kosm.bubblebuster.repositories.TweetRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import twitter4j.OEmbed;
 import twitter4j.OEmbedRequest;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
 
-import javax.imageio.ImageIO;
-import javax.xml.bind.DatatypeConverter;
-import java.awt.*;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.util.*;
 import java.util.List;
 
@@ -35,16 +20,16 @@ public class HashtagAnalyser {
         this.repository = repository;
     }
 
-    private List<String> trim(String[] tags) {
+    private List<String> trimToLower(String[] tags) {
         List<String> trimmed = new ArrayList<>(tags.length);
         for (String tag: tags) {
-            trimmed.add(tag.trim());
+            trimmed.add(tag.trim().toLowerCase());
         }
         return trimmed;
     }
 
     public List<AnalyzedHashtag> relations(String... tags) {
-        Iterable<Hashtag> hashtags = repository.findAllById(trim(tags));
+        Iterable<Hashtag> hashtags = repository.findAllById(trimToLower(tags));
         List<AnalyzedHashtag> analyzedHashtags = new ArrayList<>(tags.length);
         AnalyzedHashtag analyzedHashtag;
         for (Hashtag h1 : hashtags) {

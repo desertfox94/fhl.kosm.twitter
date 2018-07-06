@@ -1,6 +1,8 @@
 package fhl.kosm.bubblebuster.model;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.*;
 
@@ -21,11 +23,11 @@ public class Hashtag {
     }
 
     public void addRelation(Hashtag hashtag) {
-        Long count = related.get(hashtag.toString());
+        Long count = related.get(hashtag.getTag());
         if (count == null) {
             count = 0l;
         }
-        related.put(hashtag.toString(), ++count);
+        related.put(hashtag.getTag(), ++count);
         Relation<Hashtag> relation = new Relation(this, hashtag);
         related.get(relation);
     }
@@ -52,6 +54,27 @@ public class Hashtag {
         return related;
     }
 
+    public Map<String, Long> relationsInverted() {
+        Map<String, Long> inverted = new HashMap<>(related.size());
+        long count = mostRelated().getValue() + 1;
+        for (Map.Entry<String, Long> e: related.entrySet()) {
+            inverted.put(e.getKey(), count - e.getValue());
+        }
+        return inverted;
+    }
+
+    public Map.Entry<String, Long> mostRelated() {
+        long max = 0;
+        Map.Entry<String, Long> mostRelated = null;
+        for (Map.Entry<String, Long> e : related.entrySet()) {
+            if (e.getValue() > max) {
+                max = e.getValue();
+                mostRelated = e;
+            }
+        }
+        return mostRelated;
+    }
+
     public long relationsCount() {
         long sum = 0;
         for (Long l : related.values()) {
@@ -66,5 +89,17 @@ public class Hashtag {
 
     public String getDisplayName() {
         return displayName;
+    }
+
+    public String getTag() {
+        return tag;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Hashtag) {
+            return ((Hashtag) obj).getTag().equals(tag);
+        }
+        return false;
     }
 }
