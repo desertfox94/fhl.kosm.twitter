@@ -18,8 +18,6 @@ public class TweetService {
 
     private TweetRepository tweetRepository;
 
-    private MongoTemplate mongo = new MongoTemplate(new MongoClient("localhost"), "twitter");
-
     private Optional<Consumer<Hashtag>> updatedHashtag = Optional.empty();
 
     public TweetService(HashtagRepository hashtagRepository, TweetRepository tweetRepository) {
@@ -58,7 +56,6 @@ public class TweetService {
         if (tweet == null) {
             tweet = create(status);
             tweetRepository.save(tweet);
-            mongo.save(status);
         }
         return tweet;
     }
