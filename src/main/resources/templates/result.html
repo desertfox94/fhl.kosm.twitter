@@ -3,16 +3,87 @@
 <head>
     <title>Getting Started: Serving Web Content</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+    <!-- Bootstrap Einbindung -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+
+    <!-- Um zwischen bestimmten Zeilen besondere Abstände zu haben -->
+    <style>
+        .row-mt-10 {
+            margin-top: 10px;
+        }
+        .row-mt-20 {
+            margin-top: 20px;
+        }
+    </style>
+
+
 </head>
 <body>
-<!--/*@thymesVar id="hashtags" type="java.util.List<fhl.kosm.bubblebuster.model.AnalyzedHashtag>"*/-->
+<!--/*@thymesVar id="hashtags" type="java.util.List<fhl.kosm.bubblebuster.model.AnalyzedHashtag>"*/
 <div th:each="hashtag : ${hashtags}">
     <h3 th:text="${hashtag.getHashtag().getDisplayName()}"></h3>
     <p th:each="rel : ${hashtag.getRelations()}" th:text="${rel.toString()}"></p>
     <img width="472" height="384" th:src="${hashtag.getWordcloud()}">
     <div th:each="embedded : ${hashtag.getEmbeddedTweets()}" th:remove="tag" th:utext="${embedded}"></div>
-</div>
+</div>-->
 
-</body>
+
+<div class="row row-mt-10">
+    <div class="col-md-2"></div>
+    <div class="col-md-8">
+        <div class="row">
+            <div class="panel panel-default">
+                <div class="panel-heading" style="text-align: center"><h2>What's connected?</h2></div>
+                <div class="panel-body">
+                    <div class="row row-mt-20">
+                        <div class="col-md-1"></div>
+                        <div class="col-md-10">
+                            <div class="panel panel-info" th:each="hashtag : ${hashtags}">
+                                <div class="panel-heading"><h3 th:text="${hashtag.getHashtag().getDisplayName()}"></h3></div><!-- Hier der Name vom ersten Hashtag -->
+                                <div class="panel-body">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <h4>Connected Hashtags:</h4>
+                                            <p th:each="rel : ${hashtag.getRelations()}" th:text="${rel.toString()}"></p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-4"></div>
+                                        <div class="col-md-4">
+                                            <div class="thumbnail">
+                                                <!--<a href="/clouds/malta_malta.png"> Hier die generierte Wordcloud einbinden -->
+                                                <img th:src="${hashtag.getWordcloud()}" alt="Lights" width="472" height="384">
+                                                <div class="caption">
+                                                    <p>Wordcloud of Hashtag Nr. 1</p>
+                                                </div>
+                                                <!--</a>-->
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-4"></div>
+                                        <div class="col-md-4">
+                                            <div th:each="embedded : ${hashtag.getEmbeddedTweets()}" th:remove="tag" th:utext="${embedded}"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row-mt-10">
+    <div class="col-md-2"></div>
+    <div class="col-md-8">
+        <button type="button" class="btn btn-block btn-default" ><a href="https://surv.es/jECamPDdEzXatsNKg">Nehmen Sie sich ein paar Minuten für unsere Umfrage Zeit!</a></button>
+    </div>
+</div>
 </body>
 </html>
