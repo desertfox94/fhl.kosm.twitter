@@ -5,23 +5,10 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 
     <!-- Bootstrap Einbindung -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="css/bootstrap.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-
-
-    <!-- Um zwischen bestimmten Zeilen besondere Abstände zu haben -->
-    <style>
-        .row-mt-10 {
-            margin-top: 10px;
-        }
-
-        .row-mt-20 {
-            margin-top: 20px;
-        }
-    </style>
-
-
+    <link rel="stylesheet"  href="css/whatsConnectedStyles.css" />
 </head>
 <body>
 <div class="row row-mt-10">
@@ -44,7 +31,7 @@
                                             <div th:each="rel : ${hashtag.getUsages()}">
                                                 <span th:text="${rel.key} + ': '"></span>
                                                 <div class="progress">
-                                                    <div class="progress-bar" role="progressbar"
+                                                    <div class="progress-bar " role="progressbar"
                                                          th:style="'width:' + ${rel.value} + '%'"
                                                          aria-valuemin="0" aria-valuemax="100"
                                                          th:text="${rel.value}">
