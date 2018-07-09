@@ -32,7 +32,7 @@ public class RecursiveTweetCollector extends TweetCollector {
                     if (alive) {
                         alive = false;
                     } else {
-                        loadFromTwitter(new ArrayList<>(remaining));
+                        new Thread(() -> loadFromTwitter(new ArrayList<>(remaining)));
                     }
                     try {
                         Thread.sleep(1000 * 60 * 15);

@@ -24,8 +24,6 @@ public class App implements CommandLineRunner {
     @Autowired
     TweetRepository tweetRepository;
 
-    final RecursiveTweetCollector collector  = new RecursiveTweetCollector();
-
     public static void main(String[] args) {
         SpringApplication.run(App.class, args);
     }
@@ -40,13 +38,22 @@ public class App implements CommandLineRunner {
 
 //        Thread.sleep(1000 * 60 * 15);
 
+//        Twitter twitter = TwitterFactory.getSingleton();
+//        TrendsResources trends = TwitterFactory.getSingleton().trends();
+//        List<Location> locations = trends.getClosestTrends(new GeoLocation(53.550556, 9.993333));
+//        ArrayList trendingHashtags = new ArrayList();
+//        trendingHashtags.add("Filterblase");
+//        for(Trend trend: twitter.getPlaceTrends(locations.get(0).getWoeid()).getTrends()) {
+//            trendingHashtags.add(trend.getName());
+//        }
 
-//        String[] selectedHashtags = {"Pizza", "spongebob", "naherosten", "Pferde", "Polizei", "Berlin", "Hamburg", "Kiel"};
+//        String[] hashtags = {"Filterbubble", "Google", "Facebook", "Jodel", "Bubble", "Filter", "Blase", "Filterblase", "#Tatort", "#RUSCRO", "#nurderHSV", "#FACEITMinor", "#Seebrücke", "Abonnenten", "New York Times", "Kroatien", "Schönen Sonntag", "Jungen", "Lewis", "Kilometer", "Croatia", "Putin", "Hamilton", "Tanja Maljartschuk", "#ESLOne", "#Zverev", "#schwiegertochtergesucht", "#Grindel", "#TSGarmisch", "#Steinmeier", "#SGEagles", "#SWEENG", "#BritishGP", "#Thailand", "#ColognePride", "#dopa", "#Fernsehgarten", "#TDF2018", "#PokemonGOCommunityDay", "#NoPolGNRW", "#ENGSWE", "#IMSA", "#SilverstoneGP", "#PremierTour", "#Presseclub", "#PorscheMobil1Supercup", "#ironman", "#RiftRivals2018", "#hahohe", "#ThreeLions", "#Civilfleet", "#tddl", "#Japan", "#SundayFunday", "#FCAinMals", "#Go4SC2", "#CFCSGD", "#Blankenfelde", "Pizza", "spongebob", "naherosten", "Pferde", "Polizei", "Berlin", "Hamburg", "Kiel"};
+//        List<String> hashtags = Arrays.asList("twitter", "Filterbubble", "Bubble", "Filter", "Blase", "Filterblase", "FakeNews", "fakenews");
 //        TweetService service = new TweetService(hashtagRepository, tweetRepository);
+//        final RecursiveTweetCollector collector  = new RecursiveTweetCollector(service);
 //        boolean endless = true;
-//        collector.loadHashtags(null, selectedHashtags);
 //        new Thread(() -> {
-//            collector.start(Arrays.asList(selectedHashtags), service, endless);
+//            collector.loadHashtags(null, hashtags);
 //        }).run();
     }
 }

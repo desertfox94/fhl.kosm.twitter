@@ -3,7 +3,7 @@ package fhl.kosm.bubblebuster.model;
 import java.util.HashSet;
 import java.util.Set;
 
-public class TweetRelation {
+public class TweetRelation implements Comparable<TweetRelation> {
 
     private Hashtag from;
 
@@ -39,6 +39,10 @@ public class TweetRelation {
         return 1 - intersectionPercentage();
     }
 
+    public String intersectionPercentageInvertedString() {
+        return String.valueOf((int) (intersectionPercentageInverted() * 100));
+    }
+
     public Hashtag from() {
         return from;
     }
@@ -47,17 +51,13 @@ public class TweetRelation {
         return to;
     }
 
-    public String getWordcloud() {
-        return wordcloud;
-    }
-
-    public void setWordcloud(String wordcloud) {
-        this.wordcloud = wordcloud;
-    }
-
     @Override
     public String toString() {
         return String.format("%.4f %s -> %s : %s", intersectionPercentage(), from().toString(), to().toString(), intersection().toString());
     }
 
+    @Override
+    public int compareTo(TweetRelation o) {
+        return o.intersectionPercentageInvertedString().compareTo(intersectionPercentageInvertedString());
+    }
 }

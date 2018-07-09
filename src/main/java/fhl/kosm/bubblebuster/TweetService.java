@@ -91,22 +91,18 @@ public class TweetService {
                 if (tag.equals(related)) {
                     continue;
                 }
-
+                updatedHashtag(tweet, tag, related);
             }
         }
     }
 
-    private void updatedHashtag(Tweet tweet, final Hashtag tag, final Hashtag related) {
-        // we can do some because the tweets are stored in a hashset.
-        // tweets override the hashfunction with the hash of their id.
+    private void updatedHashtag(Tweet tweet, Hashtag tag, Hashtag related) {
         tag.addTweet(tweet);
         related.addTweet(tweet);
         tag.addRelation(related);
         related.addRelation(tag);
         hashtagRepository.save(tag);
         hashtagRepository.save(related);
-        updatedHashtag.ifPresent(u -> u.accept(tag));
-        updatedHashtag.ifPresent(u -> u.accept(related));
     }
 
     private Hashtag getOrCreate(String tag, Tweet tweet) {

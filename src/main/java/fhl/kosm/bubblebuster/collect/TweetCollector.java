@@ -27,7 +27,7 @@ public class TweetCollector extends QueryExecuter {
 
     private BufferedWriter writer;
 
-    private ResultType type = ResultType.mixed;
+    private ResultType type = ResultType.recent;
 
     public TweetCollector(TweetService service) {
         tweetService = service;
@@ -63,6 +63,9 @@ public class TweetCollector extends QueryExecuter {
         }
         Query query = buildQuery(tag);
         execute(query, exec());
+        if (!tag.equals(tag.toLowerCase())) {
+            loadByHashtag(tag.toLowerCase());
+        }
     }
 
     protected TweetProcessor exec() {

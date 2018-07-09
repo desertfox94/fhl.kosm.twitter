@@ -56,6 +56,10 @@ public class Hashtag {
 
     public Map<String, Long> relationsInverted() {
         Map<String, Long> inverted = new HashMap<>(related.size());
+        Map.Entry<String, Long> mostRelated = mostRelated();
+        if (mostRelated == null) {
+            return Collections.emptyMap();
+        }
         long count = mostRelated().getValue() + 1;
         for (Map.Entry<String, Long> e: related.entrySet()) {
             inverted.put(e.getKey(), count - e.getValue());

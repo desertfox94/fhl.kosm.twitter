@@ -36,7 +36,7 @@ public class HashtagAnalyser {
             analyzedHashtag = new AnalyzedHashtag(h1);
             analyzedHashtags.add(analyzedHashtag);
             analyzedHashtag.setWordcloud(wordcloud.asBase64(h1));
-            for (Hashtag h2 : hashtags) {
+            for (Hashtag h2 : loadRelated(h1)) {
                 if (h1 == h2)
                     continue;
                 analyzedHashtag.addRelation(h2);
@@ -44,6 +44,12 @@ public class HashtagAnalyser {
             analyzedHashtag.setEmbeddedTweets(loadTweetsOfMostRelatedHashtag(analyzedHashtag));
         }
         return analyzedHashtags;
+    }
+
+    private Collection<Hashtag> loadRelated(Hashtag hashtag) {
+        final Set<Hashtag> result = new HashSet<>();
+        hashtag.relatedHashtags().forEach(h -> repository.findById(h).ifPresent(t -> result.add(t)));
+        return result;
     }
 
     private List<String> loadTweetsOfMostRelatedHashtag(AnalyzedHashtag analyzedHashtag) {

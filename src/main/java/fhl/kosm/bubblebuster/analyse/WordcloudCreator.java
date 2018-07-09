@@ -28,32 +28,44 @@ public class WordcloudCreator {
 
 //    private final ColorPalette COLOR_PALETTE = new ColorPalette(new Color( 	0x0084b4), new Color(0x00aced), new Color(0x1dcaff), new Color(0xc0deed));
 
-    private final ColorPalette COLOR_PALETTE = new ColorPalette(new Color( 	0x1DA1F2));
+    private final ColorPalette COLOR_PALETTE = new ColorPalette(new Color(0x1DA1F2));
 
-    private final int  WIDTH = 944;
+    private final int WIDTH = 944;
 
-    private final int  HEIGHT = 768;
+    private final int HEIGHT = 768;
 
     public WordCloud create(Hashtag hashtag) {
-            List<WordFrequency> wordFrequencies = new ArrayList<>(hashtag.relations().size());
+        List<WordFrequency> wordFrequencies = new ArrayList<>(hashtag.relations().size());
 
-            hashtag.relationsInverted().entrySet().forEach(e -> wordFrequencies.add(new WordFrequency(e.getKey(), e.getValue().intValue())));
-            final Dimension dimension = new Dimension(WIDTH, HEIGHT);
-            final WordCloud wordCloud = new WordCloud(dimension, CollisionMode.PIXEL_PERFECT);
-            wordCloud.setPadding(2);
-            wordCloud.setBackground(backgroundFor(hashtag));
-            wordCloud.setColorPalette(COLOR_PALETTE);
-            wordCloud.setFontScalar(new LinearFontScalar(30, 80));
-            FrequencyAnalyzer frequencyAnalyzer = new FrequencyAnalyzer();
-            frequencyAnalyzer.setWordFrequenciesToReturn(100);
-            wordCloud.setBackgroundColor(new Color(0,0,0,0));
-            wordCloud.build(frequencyAnalyzer.loadWordFrequencies(createWordFrequencies(hashtag)));
-            return wordCloud;
+        hashtag.relationsInverted().entrySet().forEach(e -> wordFrequencies.add(new WordFrequency(e.getKey(), e.getValue().intValue())));
+        final WordCloud wordCloud = new WordCloud(dimension(hashtag), CollisionMode.PIXEL_PERFECT);
+        wordCloud.setPadding(2);
+        wordCloud.setBackground(backgroundFor(hashtag));
+        wordCloud.setColorPalette(COLOR_PALETTE);
+        wordCloud.setFontScalar(new LinearFontScalar(30, 80));
+        FrequencyAnalyzer frequencyAnalyzer = new FrequencyAnalyzer();
+        frequencyAnalyzer.setWordFrequenciesToReturn(100);
+        wordCloud.setBackgroundColor(new Color(0, 0, 0, 0));
+        wordCloud.build(frequencyAnalyzer.loadWordFrequencies(createWordFrequencies(hashtag)));
+        return wordCloud;
+    }
+
+    private Dimension dimension(Hashtag hashtag) {
+        if (hashtag.relatedHashtags().size()> 60) {
+            return  new Dimension(WIDTH, HEIGHT);
+        }
+        int size = circleRadius(hashtag.relatedHashtags().size()) * 2;
+        return new Dimension(size, size);
+    }
+
+    private int circleRadius(int hashtagCount) {
+        return hashtagCount < 15 ? 200 : hashtagCount < 30 ? 400 : 800;
     }
 
     private Background backgroundFor(Hashtag hashtag) {
         Background background = null;
-        if (hashtag.relatedHashtags().size() > 60) {
+        int size = hashtag.relatedHashtags().size();
+        if (size > 60) {
             try {
                 background = new PixelBoundryBackground(FileUtil.fileInCurrentDirectory("src\\main\\resources\\Twitter_Bird.png"));
             } catch (IOException e) {
@@ -61,7 +73,7 @@ public class WordcloudCreator {
             }
         }
         if (background == null) {
-            background = new CircleBackground(200);
+            background = new CircleBackground(circleRadius(size));
         }
         return background;
     }
@@ -69,7 +81,7 @@ public class WordcloudCreator {
     private List<WordFrequency> createWordFrequencies(Hashtag hashtag) {
         double relationsCount = hashtag.relationsCount();
         List<WordFrequency> frequencies = new ArrayList<>(hashtag.relations().size());
-        hashtag.relations().forEach((k, v) ->frequencies.add(new WordFrequency(k, v.intValue())));
+        hashtag.relations().forEach((k, v) -> frequencies.add(new WordFrequency(k, v.intValue())));
         return frequencies;
     }
 

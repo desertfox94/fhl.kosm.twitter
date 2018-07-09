@@ -1,12 +1,12 @@
 package fhl.kosm.bubblebuster.model;
 
 import com.kennycason.kumo.nlp.FrequencyAnalyzer;
+import fhl.kosm.bubblebuster.repositories.MapUtil;
 
+import javax.management.MalformedObjectNameException;
 import javax.management.relation.Relation;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
+import javax.swing.text.html.parser.Entity;
+import java.util.*;
 
 public class AnalyzedHashtag {
 
@@ -24,6 +24,26 @@ public class AnalyzedHashtag {
 
     public List<TweetRelation> getRelations() {
         return relations;
+    }
+
+    public List<Map.Entry<String, String>> getUsages() {
+        Map<String, String> withValue = new HashMap<>();
+        long c = hashtag.relationsCount();
+        for (Map.Entry<String, Long> entry :hashtag.relations().entrySet()) {
+            int rate = (int) (entry.getValue() / (double) c * 100) ;
+            if (rate > 0) {
+                withValue.put("#" + entry.getKey(), String.valueOf(rate));
+            }
+        }
+        List<Map.Entry<String, String>> topTen = new ArrayList<>(5);
+        int i = 0;
+        for (Map.Entry<String, String> entry : MapUtil.sortByValueDescending(withValue).entrySet()) {
+            topTen.add(entry);
+            if (i++ > 5) {
+                break;
+            }
+        }
+        return topTen;
     }
 
     public Hashtag getHashtag() {
