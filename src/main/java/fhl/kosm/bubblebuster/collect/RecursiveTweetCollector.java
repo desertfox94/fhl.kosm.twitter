@@ -12,37 +12,8 @@ public class RecursiveTweetCollector extends TweetCollector {
 
     Set<String> remaining = new HashSet<>();
 
-    private boolean alive = true;
-
     public RecursiveTweetCollector(TweetService service) {
         super(service);
-    }
-
-    public RecursiveTweetCollector() {
-        this(null);
-    }
-
-    public void start(List<String> hashtags, TweetService service, boolean endless) {
-        this.tweetService = service;
-        // is runner alive? wasn an exception thrown? restart it!
-        if (endless)
-            new Thread(() -> {
-                Set<String> remaining = RecursiveTweetCollector.this.remaining;
-                while (!remaining.isEmpty()) {
-                    if (alive) {
-                        alive = false;
-                    } else {
-                        new Thread(() -> loadFromTwitter(new ArrayList<>(remaining)));
-                    }
-                    try {
-                        Thread.sleep(1000 * 60 * 15);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-
-                }
-            }).start();
-        loadFromTwitter(hashtags);
     }
 
     @Override
@@ -70,7 +41,6 @@ public class RecursiveTweetCollector extends TweetCollector {
         return status -> {
             Tweet tweet = tweetService.update(status);
             tweet.getHashtags().forEach(tag -> {
-                alive = true;
                 if (notMarkedOrLoaded(tag)) {
                     System.out.println("mark: " + tag);
                     remaining.add(tag);
