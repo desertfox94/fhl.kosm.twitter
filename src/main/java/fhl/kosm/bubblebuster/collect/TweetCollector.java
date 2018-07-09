@@ -41,6 +41,13 @@ public class TweetCollector extends QueryExecuter {
         if (stream != null) {
             writer = new BufferedWriter(new OutputStreamWriter(stream));
         }
+        List<String> result = new ArrayList<>(hashtags.length * 2);
+        for (String tag : hashtags) {
+            result.add(tag);
+            if (!tag.toLowerCase().equals(tag)) {
+                result.add(tag.toLowerCase());
+            }
+        }
         loadFromTwitter(Arrays.asList(hashtags));
         return tweetService.tweetsOf(hashtags);
     }

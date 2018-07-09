@@ -16,12 +16,12 @@ public class ThreadPoolRunner {
 
     static String DIRECTORY = "D:\\dev\\data\\clouds\\inverted";
 
-    public ThreadPoolRunner(List<Hashtag> pool) {
+    public ThreadPoolRunner(String directory, List<Hashtag> pool) {
         this.pool = new LinkedList<>(pool);
     }
 
     public ThreadPoolRunner(Hashtag... pool) {
-        this(Arrays.asList(pool));
+        this(DIRECTORY, Arrays.asList(pool));
     }
 
     static Hashtag next() {
@@ -62,9 +62,14 @@ class Runner implements Runnable {
     public void run() {
         System.out.println(id +": started");
         Hashtag hashtag;
+        String tag;
         while ((hashtag = ThreadPoolRunner.next()) != null) {
-            writer.write(hashtag.getTag(), creator.createAsBase64(hashtag));
-            System.out.println(id +": created word cloud for " + hashtag.getTag());
+            tag = hashtag.getTag();
+            if (writer.exists(tag)) {
+                continue;
+            }
+            writer.write(tag, creator.createAsBase64(hashtag));
+            System.out.println(id +": created word cloud for " + tag);
         }
     }
 }

@@ -9,6 +9,7 @@ import java.util.List;
 
 public class Tweet {
 
+    @Id
     private long id;
 
     public Tweet(long id) {

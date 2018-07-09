@@ -44,6 +44,9 @@ public class RecursiveTweetCollector extends TweetCollector {
                 if (notMarkedOrLoaded(tag)) {
                     System.out.println("mark: " + tag);
                     remaining.add(tag);
+                    if (!tag.toLowerCase().equals(tag)) {
+                        remaining.add(tag.toLowerCase());
+                    }
                 }
             });
             write(tweet);

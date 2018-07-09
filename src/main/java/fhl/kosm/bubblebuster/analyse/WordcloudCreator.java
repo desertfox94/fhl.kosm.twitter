@@ -34,24 +34,28 @@ public class WordcloudCreator {
 
     private final int HEIGHT = 768;
 
-    public WordCloud create(Hashtag hashtag) {
-        List<WordFrequency> wordFrequencies = new ArrayList<>(hashtag.relations().size());
+    private final int MIN_BIRD_WORDCCLOUD_WORDS = 70;
 
-        hashtag.relationsInverted().entrySet().forEach(e -> wordFrequencies.add(new WordFrequency(e.getKey(), e.getValue().intValue())));
+    public WordCloud create(Hashtag hashtag) {
+        if (!canCreate(hashtag)) {
+            return null;
+        }
+        List<WordFrequency> wordFrequencies = new ArrayList<>(hashtag.relationsInverted().size());
+
         final WordCloud wordCloud = new WordCloud(dimension(hashtag), CollisionMode.PIXEL_PERFECT);
         wordCloud.setPadding(2);
         wordCloud.setBackground(backgroundFor(hashtag));
         wordCloud.setColorPalette(COLOR_PALETTE);
-        wordCloud.setFontScalar(new LinearFontScalar(30, 80));
+        wordCloud.setFontScalar(new LinearFontScalar(20, 35));
         FrequencyAnalyzer frequencyAnalyzer = new FrequencyAnalyzer();
-        frequencyAnalyzer.setWordFrequenciesToReturn(100);
+        frequencyAnalyzer.setWordFrequenciesToReturn(140);
         wordCloud.setBackgroundColor(new Color(0, 0, 0, 0));
         wordCloud.build(frequencyAnalyzer.loadWordFrequencies(createWordFrequencies(hashtag)));
         return wordCloud;
     }
 
     private Dimension dimension(Hashtag hashtag) {
-        if (hashtag.relatedHashtags().size()> 60) {
+        if (hashtag.relatedHashtags().size()> MIN_BIRD_WORDCCLOUD_WORDS) {
             return  new Dimension(WIDTH, HEIGHT);
         }
         int size = circleRadius(hashtag.relatedHashtags().size()) * 2;
@@ -59,13 +63,13 @@ public class WordcloudCreator {
     }
 
     private int circleRadius(int hashtagCount) {
-        return hashtagCount < 15 ? 200 : hashtagCount < 30 ? 400 : 800;
+        return hashtagCount < 15 ? 250 : hashtagCount < 30 ? 320 : 450;
     }
 
     private Background backgroundFor(Hashtag hashtag) {
         Background background = null;
         int size = hashtag.relatedHashtags().size();
-        if (size > 60) {
+        if (size > MIN_BIRD_WORDCCLOUD_WORDS) {
             try {
                 background = new PixelBoundryBackground(FileUtil.fileInCurrentDirectory("src\\main\\resources\\Twitter_Bird.png"));
             } catch (IOException e) {
@@ -79,9 +83,8 @@ public class WordcloudCreator {
     }
 
     private List<WordFrequency> createWordFrequencies(Hashtag hashtag) {
-        double relationsCount = hashtag.relationsCount();
-        List<WordFrequency> frequencies = new ArrayList<>(hashtag.relations().size());
-        hashtag.relations().forEach((k, v) -> frequencies.add(new WordFrequency(k, v.intValue())));
+        List<WordFrequency> frequencies = new ArrayList<>(hashtag.relationsInverted().size());
+        hashtag.relationsInverted().forEach((k, v) -> frequencies.add(new WordFrequency(k, v.intValue())));
         return frequencies;
     }
 
@@ -94,13 +97,20 @@ public class WordcloudCreator {
                 e.printStackTrace();
             }
         }
-        return asBase64(create(hashtag).getBufferedImage());
+        return createAsBase64(hashtag);
     }
 
     public String createAsBase64(Hashtag hashtag) {
-        return asBase64(create(hashtag).getBufferedImage());
+        return asBase64(create(hashtag));
     }
 
+    public boolean canCreate(Hashtag hashtag) {
+        return hashtag.relations().size() >= 7;
+    }
+
+    private String asBase64(WordCloud wordCloud) {
+        return wordCloud == null ? null : asBase64(wordCloud.getBufferedImage());
+    }
 
     private String asBase64(BufferedImage image) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();

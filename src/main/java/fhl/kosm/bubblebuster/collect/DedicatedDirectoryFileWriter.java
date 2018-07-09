@@ -13,8 +13,11 @@ public class DedicatedDirectoryFileWriter {
     }
 
     public void write(String name, String data) {
+        if (data == null) {
+            return;
+        }
         try {
-            FileWriter writer = new FileWriter(directory + File.separator + name);
+            FileWriter writer = new FileWriter(fileWithName(name));
             writer.write(data);
             writer.flush();
             writer.close();
@@ -24,5 +27,12 @@ public class DedicatedDirectoryFileWriter {
         }
     }
 
+    private File fileWithName(String name) {
+        return new File(directory + File.separator + name);
+    }
+
+    public boolean exists(String name) {
+        return fileWithName(name).exists();
+    }
 
 }
