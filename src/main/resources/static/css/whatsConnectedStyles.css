@@ -1,17 +1,17 @@
-.twitterDarkBlue {
-    background: #0084b4;
+.twitterDarkBlueBackground {
+    background-color: #0084b4!important;
 }
 
-.twitterBlue {
-    background: #00aced;
+.twitterBlueBackground {
+    background-color: #00aced!important;;
 }
 
-.twitterBrightBlue {
-    background: #1dcaff;
+.twitterLightBlueBackground {
+    background-color: #1dcaff!important;;
 }
 
-.twitterLightGray {
-    background: #c0deed;
+.twitterLightGrayBackground {
+    background-color: #c0deed!important;;
 }
 
 .row-mt-10 {

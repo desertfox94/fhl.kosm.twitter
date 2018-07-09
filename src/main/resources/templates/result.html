@@ -31,7 +31,7 @@
                                             <div th:each="rel : ${hashtag.getUsages()}">
                                                 <span th:text="${rel.key} + ': '"></span>
                                                 <div class="progress">
-                                                    <div class="progress-bar " role="progressbar"
+                                                    <div class="progress-bar twitterBlueBackground" role="progressbar"
                                                          th:style="'width:' + ${rel.value} + '%'"
                                                          aria-valuemin="0" aria-valuemax="100"
                                                          th:text="${rel.value}">
