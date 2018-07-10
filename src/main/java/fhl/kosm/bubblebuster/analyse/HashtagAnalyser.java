@@ -41,7 +41,7 @@ public class HashtagAnalyser {
                     continue;
                 analyzedHashtag.addRelation(h2);
             }
-            analyzedHashtag.setEmbeddedTweets(loadTweetsOfMostRelatedHashtag(analyzedHashtag));
+            analyzedHashtag.setEmbeddedTweets(loadTweetsOfLessRelatedHashtag(analyzedHashtag));
         }
         return analyzedHashtags;
     }
@@ -52,12 +52,12 @@ public class HashtagAnalyser {
         return result;
     }
 
-    private List<String> loadTweetsOfMostRelatedHashtag(AnalyzedHashtag analyzedHashtag) {
-        return loadTweetsOfMostRelatedHashtag(analyzedHashtag, 2);
+    private List<String> loadTweetsOfLessRelatedHashtag(AnalyzedHashtag analyzedHashtag) {
+        return loadTweetsOfLessRelatedHashtag(analyzedHashtag, 2);
     }
 
-    private List<String> loadTweetsOfMostRelatedHashtag(AnalyzedHashtag analyzedHashtag, int limit) {
-        Set<Tweet> tweets = analyzedHashtag.tweetsOfMostRelatedHashtag();
+    private List<String> loadTweetsOfLessRelatedHashtag(AnalyzedHashtag analyzedHashtag, int limit) {
+        Set<Tweet> tweets = analyzedHashtag.tweetsOfLessRelatedHashtag();
         List<String> result = new ArrayList<>(limit);
         int i = 0;
         for (Tweet tweet : tweets) {
