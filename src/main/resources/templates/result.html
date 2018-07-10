@@ -1,14 +1,14 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Getting Started: Serving Web Content</title>
+    <title>What's connected</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 
     <!-- Bootstrap Einbindung -->
-    <link rel="stylesheet" href="css/bootstrap.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <link rel="stylesheet"  href="css/whatsConnectedStyles.css" />
+    <link rel="stylesheet" href="css/whatsConnectedStyles.css"/>
 </head>
 <body>
 <div class="row row-mt-10">
@@ -34,29 +34,22 @@
                                                     <div class="progress-bar twitterBlueBackground" role="progressbar"
                                                          th:style="'width:' + ${rel.value} + '%'"
                                                          aria-valuemin="0" aria-valuemax="100"
-                                                         th:text="${rel.value}">
+                                                         th:text="${rel.value} + '%'">
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-md-4"></div>
                                         <div class="col-md-4">
                                             <div class="thumbnail">
                                                 <img th:src="${hashtag.getWordcloud()}" alt="Lights">
-                                                <div class="caption">
-                                                    <p>Wordcloud of Hashtag Nr. 1</p>
-                                                </div>
-                                                <!--</a>-->
                                             </div>
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-md-4"></div>
-                                        <div class="col-md-4">
-                                            <div th:each="embedded : ${hashtag.getEmbeddedTweets()}" th:remove="tag"
-                                                 th:utext="${embedded}"></div>
+                                        <div th:each="embedded : ${hashtag.getEmbeddedTweets()}" class="col-md-4">
+                                            <div th:remove="tag" th:utext="${embedded}"></div>
                                         </div>
                                     </div>
                                 </div>
@@ -69,8 +62,30 @@
     </div>
 </div>
 <div class="row-mt-10">
-    <div class="col-md-2"></div>
+    <div class="col-md-2">
+    </div>
     <div class="col-md-8">
+        <div class="bs-example text-center">
+            <div class="panel-group" id="accordion">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">Fällt Ihnen etwas auf?</a>
+                        </h4>
+                    </div>
+                    <div id="collapseOne" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            <p>Ist Ihnen bei der Auswertung der Hashtags etwas aufgefallen? Haben Sie eine Vermutung was hier nicht richtig gelaufen ist oder fällt Ihnen jetzt durch erneutes Hinsehen etwas auf?
+                                Wenn nicht, hier die Erklärung:</p>
+                            <p>Wir haben etwas geschwindelt bei der Auflistung der "Connected Hashtags". Es werden Ihnen nicht unbedingt die am häufigst verkommenden Hashtags angezeigt, sondern ganz im Gegenteil!
+                                Nun fragen Sie sich vielleicht warum wir das machen?! Aus dem einfachen Grund, Sie darauf hinweisen zu wollen was Social Media (in unserem Fall Twitter) mit Ihren Tweets macht. Twitter analysiert Ihren Tweet und wird Ihnen zukünftig Tweets anzeigen, die ähnliche Hashtags verwenden. Dadurch werden Sie jedoch nie die ganze Wahrheit zu Gesicht bekommen. Dieses Internetphänomen bezeichnet man als "Filterblasen".</p>
+                            <p>Falls Ihnen unser Projekt gefallen hat und Sie zwei Minuten Zeit haben, können Sie gerne an unser anonymen Umfrage teilnehmen.</p>
+                            <p>Ihr "What's connected"-Team</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <button type="button" class="btn btn-block btn-default"><a href="https://surv.es/jECamPDdEzXatsNKg">Nehmen Sie
             sich ein paar Minuten für unsere Umfrage Zeit!</a></button>
     </div>

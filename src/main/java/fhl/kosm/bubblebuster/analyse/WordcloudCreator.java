@@ -49,9 +49,13 @@ public class WordcloudCreator {
         wordCloud.setPadding(2);
         wordCloud.setBackground(backgroundFor(hashtag));
         wordCloud.setColorPalette(COLOR_PALETTE);
-        wordCloud.setFontScalar(new LinearFontScalar(20, 80));
+        if (hashtag.relations().size() > 60) {
+            wordCloud.setFontScalar(new LinearFontScalar(20, 50));
+        } else {
+            wordCloud.setFontScalar(new LinearFontScalar(20, 80));
+        }
         FrequencyAnalyzer frequencyAnalyzer = new FrequencyAnalyzer();
-        frequencyAnalyzer.setWordFrequenciesToReturn(140);
+        frequencyAnalyzer.setWordFrequenciesToReturn(100);
         wordCloud.setBackgroundColor(new Color(0, 0, 0, 0));
         wordCloud.build(frequencyAnalyzer.loadWordFrequencies(createWordFrequencies(hashtag)));
         return wordCloud;

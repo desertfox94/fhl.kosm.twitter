@@ -29,7 +29,7 @@ public class AnalyzedHashtag {
     public List<Map.Entry<String, String>> getUsages() {
         Map<String, String> withValue = new HashMap<>();
         long c = hashtag.relationsCount();
-        for (Map.Entry<String, Long> entry :hashtag.relations().entrySet()) {
+        for (Map.Entry<String, Long> entry :hashtag.relationsInverted().entrySet()) {
             int rate = (int) (entry.getValue() / (double) c * 100) ;
             if (rate > 0) {
                 withValue.put("#" + entry.getKey(), String.valueOf(rate));
@@ -38,10 +38,10 @@ public class AnalyzedHashtag {
         List<Map.Entry<String, String>> topTen = new ArrayList<>(5);
         int i = 0;
         for (Map.Entry<String, String> entry : MapUtil.sortByValueDescending(withValue).entrySet()) {
-            topTen.add(entry);
-            if (i++ > 5) {
+            if (i++ >= 5) {
                 break;
             }
+            topTen.add(entry);
         }
         return topTen;
     }
