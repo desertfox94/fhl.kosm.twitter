@@ -15,7 +15,7 @@ public class ThreadPoolRunner {
 
     private static Queue<Hashtag> pool;
 
-    static String DIRECTORY = "D:\\dev\\data\\clouds\\inverted";
+    public static String DIRECTORY = "D:\\dev\\data\\clouds\\inverted";
 
     public ThreadPoolRunner(List<Hashtag> pool) {
         this.pool = new LinkedList<>(pool);

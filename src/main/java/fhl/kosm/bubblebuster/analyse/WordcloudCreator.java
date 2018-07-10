@@ -93,7 +93,7 @@ public class WordcloudCreator {
         final int a = hashtag.relations().size();
         final int b = (int) hashtag.relationsCount();
         List<WordFrequency> frequencies = new ArrayList<>(hashtag.relationsInverted().size());
-        hashtag.relations().forEach((k, v) -> {
+        hashtag.relationsInverted().forEach((k, v) -> {
             frequencies.add(new WordFrequency(k, b * v.intValue() / a));
         });
         return frequencies;
@@ -133,7 +133,7 @@ public class WordcloudCreator {
     }
 
     public boolean canCreate(Hashtag hashtag) {
-        return hashtag.relations().size() >= 7;
+        return hashtag.relations().size() >= 3;
     }
 
     private String asBase64(WordCloud wordCloud) {

@@ -1,7 +1,9 @@
 package fhl.kosm.bubblebuster;
 
+import fhl.kosm.bubblebuster.collect.DedicatedDirectoryFileWriter;
 import fhl.kosm.bubblebuster.collect.RecursiveTweetCollector;
 import fhl.kosm.bubblebuster.collect.ThreadPoolRunner;
+import fhl.kosm.bubblebuster.model.Hashtag;
 import fhl.kosm.bubblebuster.repositories.HashtagRepository;
 import fhl.kosm.bubblebuster.repositories.TweetRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +34,16 @@ public class App implements CommandLineRunner {
     public void run(String... args) throws Exception {
 
         // create wordclouds
-        new ThreadPoolRunner(hashtagRepository.findAll()).execute();
+//        List<Hashtag> tags = hashtagRepository.findAll();
+//        List<Hashtag> left = new ArrayList<>();
+//        DedicatedDirectoryFileWriter w = new DedicatedDirectoryFileWriter(ThreadPoolRunner.DIRECTORY);
+//        for (Hashtag h : tags) {
+//            if (!w.exists(h.getTag())) {
+//                left.add(h);
+//            }
+//        }
+//        System.out.println(left.size());
+//        new ThreadPoolRunner(left).execute();
 
 //      load hashtags recursive
 

@@ -1,11 +1,7 @@
 package fhl.kosm.bubblebuster.model;
 
-import com.kennycason.kumo.nlp.FrequencyAnalyzer;
 import fhl.kosm.bubblebuster.repositories.MapUtil;
 
-import javax.management.MalformedObjectNameException;
-import javax.management.relation.Relation;
-import javax.swing.text.html.parser.Entity;
 import java.util.*;
 
 public class AnalyzedHashtag {
@@ -36,12 +32,13 @@ public class AnalyzedHashtag {
             }
         }
         List<Map.Entry<String, String>> topTen = new ArrayList<>(5);
-        int i = 0;
         for (Map.Entry<String, String> entry : MapUtil.sortByValueDescending(withValue).entrySet()) {
-            if (i++ >= 5) {
+            if (topTen.size() >= 5) {
                 break;
             }
-            topTen.add(entry);
+            if (topTen.stream().allMatch(e->!e.getValue().equals(entry.getValue()))) {
+                topTen.add(entry);
+            }
         }
         return topTen;
     }
@@ -70,24 +67,30 @@ public class AnalyzedHashtag {
         this.embeddedTweets = embeddedTweets;
     }
 
-    public Set<Tweet> tweetsOfMostRelatedHashtag() {
-        Hashtag mostRelated = mostRelatedHashtag();
-        return mostRelated == null ? Collections.emptySet() : mostRelatedHashtag().getTweets();
+    public Set<Tweet> tweetsOfLessRelatedHashtag() {
+        Hashtag mostRelated = lessRelatedHashtag();
+        return mostRelated == null ? Collections.emptySet() : lessRelatedHashtag().getTweets();
     }
 
-    public Hashtag mostRelatedHashtag() {
-        TweetRelation mostRelated = null;
+    public Hashtag lessRelatedHashtag() {
+        TweetRelation lessRelated = null;
         for (TweetRelation relation : relations) {
-            if (mostRelated == null) {
-                mostRelated = relation;
-            } else if (relation.intersectionPercentage() > mostRelated.intersectionPercentage()) {
-                mostRelated = relation;
+            if (lessRelated == null) {
+                lessRelated = relation;
+            } else if (relation.intersectionPercentage() < lessRelated.intersectionPercentage()) {
+                lessRelated = relation;
             }
         }
-        if (mostRelated == null) {
+        if (lessRelated == null) {
             return null;
         }
-        return mostRelated.to();
+        List<TweetRelation> all = new LinkedList<>();
+        for (TweetRelation relation : relations) {
+            if (lessRelated.intersectionPercentage() == relation.intersectionPercentage()) {
+                all.add(relation);
+            }
+        }
+        return all.get((int) (Math.random() * all.size())).to();
     }
 
 }
