@@ -27,7 +27,7 @@ public class DedicatedDirectoryFileWriter {
         }
     }
 
-    private File fileWithName(String name) {
+    public File fileWithName(String name) {
         return new File(directory + File.separator + name);
     }
 

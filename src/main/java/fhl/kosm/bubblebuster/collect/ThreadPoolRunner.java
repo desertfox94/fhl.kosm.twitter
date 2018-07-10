@@ -3,6 +3,7 @@ package fhl.kosm.bubblebuster.collect;
 import fhl.kosm.bubblebuster.analyse.WordcloudCreator;
 import fhl.kosm.bubblebuster.model.Hashtag;
 
+import javax.imageio.ImageIO;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -16,12 +17,12 @@ public class ThreadPoolRunner {
 
     static String DIRECTORY = "D:\\dev\\data\\clouds\\inverted";
 
-    public ThreadPoolRunner(String directory, List<Hashtag> pool) {
+    public ThreadPoolRunner(List<Hashtag> pool) {
         this.pool = new LinkedList<>(pool);
     }
 
     public ThreadPoolRunner(Hashtag... pool) {
-        this(DIRECTORY, Arrays.asList(pool));
+        this(Arrays.asList(pool));
     }
 
     static Hashtag next() {

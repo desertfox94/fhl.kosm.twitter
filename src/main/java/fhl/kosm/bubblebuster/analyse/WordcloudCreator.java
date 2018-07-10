@@ -23,6 +23,7 @@ import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 
 public class WordcloudCreator {
 
@@ -36,6 +37,8 @@ public class WordcloudCreator {
 
     private final int MIN_BIRD_WORDCCLOUD_WORDS = 70;
 
+    private Random rnd = new Random();
+
     public WordCloud create(Hashtag hashtag) {
         if (!canCreate(hashtag)) {
             return null;
@@ -46,7 +49,7 @@ public class WordcloudCreator {
         wordCloud.setPadding(2);
         wordCloud.setBackground(backgroundFor(hashtag));
         wordCloud.setColorPalette(COLOR_PALETTE);
-        wordCloud.setFontScalar(new LinearFontScalar(20, 35));
+        wordCloud.setFontScalar(new LinearFontScalar(20, 80));
         FrequencyAnalyzer frequencyAnalyzer = new FrequencyAnalyzer();
         frequencyAnalyzer.setWordFrequenciesToReturn(140);
         wordCloud.setBackgroundColor(new Color(0, 0, 0, 0));
@@ -63,7 +66,7 @@ public class WordcloudCreator {
     }
 
     private int circleRadius(int hashtagCount) {
-        return hashtagCount < 15 ? 250 : hashtagCount < 30 ? 320 : 450;
+        return hashtagCount < 15 ? 270 : hashtagCount < 30 ? 290 : hashtagCount < 45 ? 305 : 340;
     }
 
     private Background backgroundFor(Hashtag hashtag) {
@@ -83,9 +86,30 @@ public class WordcloudCreator {
     }
 
     private List<WordFrequency> createWordFrequencies(Hashtag hashtag) {
+        final int a = hashtag.relations().size();
+        final int b = (int) hashtag.relationsCount();
         List<WordFrequency> frequencies = new ArrayList<>(hashtag.relationsInverted().size());
-        hashtag.relationsInverted().forEach((k, v) -> frequencies.add(new WordFrequency(k, v.intValue())));
+        hashtag.relations().forEach((k, v) -> {
+            frequencies.add(new WordFrequency(k, b * v.intValue() / a));
+        });
         return frequencies;
+    }
+
+    private int mapping(int i) {
+        switch (i) {
+            case 1:
+                return 150;
+            case 2:
+                return 120;
+            case 3:
+                return 90;
+            case 4:
+                return 60;
+            case 5:
+                return 40;
+                default:
+                    return  rnd.nextInt() * 20;
+        }
     }
 
     public String asBase64(Hashtag hashtag) {

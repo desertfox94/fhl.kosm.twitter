@@ -32,7 +32,7 @@ public class App implements CommandLineRunner {
     public void run(String... args) throws Exception {
 
         // create wordclouds
-//        new ThreadPoolRunner(hashtagRepository.findAll()).execute();
+        new ThreadPoolRunner(hashtagRepository.findAll()).execute();
 
 //      load hashtags recursive
 
