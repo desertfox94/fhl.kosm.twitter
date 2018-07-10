@@ -1,0 +1,44 @@
+<manifest alg="2" build="2018.0.0.379" opt="false" iceEnabled="true" iceMarkupVersion="2" iceEnabledOptions="link,responsive,cachebuster,textStyling" exportTarget="other" domain="http://whatsconnected.ddnss.de" resolutions="1x" timestamp="1531174961815">
+  <folder name="css">
+    <file name="site_global.css" crc="444006867"/>
+    <file name="index.css" crc="4173396780" ref="index"/>
+    <file name="result.css" crc="174730961" ref="result"/>
+  </folder>
+  <folder name="scripts">
+    <file name="jquery-1.8.3.min.js" crc="209076791" ref="index:result"/>
+    <file name="museutils.js" crc="3803043152" ref="index:result"/>
+    <file name="whatinput.js" crc="86476730" ref="index:result"/>
+    <file name="museconfig.js" crc="380897831" ref="index:result"/>
+    <file name="jquery.watch.js" crc="99325471" ref="index:result"/>
+    <file name="webpro.js" crc="242022427" ref="index:result"/>
+    <file name="form_check.php" crc="147359589" ref="index"/>
+    <file name="form_throttle.php" crc="93986428" ref="index"/>
+    <file name="form_process.php" crc="3851993751" ref="index"/>
+    <file name="form-u115.php" crc="367188301" ref="index"/>
+    <file name="require.js" crc="4157109226" ref="index:result"/>
+    <file name="musewpslideshow.js" crc="457073769" ref="result"/>
+    <file name="jquery.museoverlay.js" crc="483674903" ref="result"/>
+    <file name="touchswipe.js" crc="4066113679" ref="result"/>
+  </folder>
+  <folder name="images">
+    <file name="u348-4.png" crc="4214730747" ref="index"/>
+    <file name="u108-6.png" crc="3966060202" ref="index"/>
+    <file name="u351-4.png" crc="3773937841" ref="result"/>
+    <file name="cactus.jpg" crc="3870647156" seo="true" ref="result">
+      <caption webpage="result" alt=""/>
+      <caption webpage="result" alt=""/>
+    </file>
+    <file name="trees.jpg" crc="97703958" seo="true" ref="result">
+      <caption webpage="result" alt=""/>
+      <caption webpage="result" alt=""/>
+    </file>
+    <file name="road.jpg" crc="3808498567" seo="true" ref="result">
+      <caption webpage="result" alt=""/>
+    </file>
+    <file name="u555-4.png" crc="161296756" ref="result"/>
+    <file name="u558-4.png" crc="4759696" ref="result"/>
+    <file name="u354-4.png" crc="447949605" ref="result"/>
+  </folder>
+  <file name="index.html" crc="3814181462" seo="true" mt="1531173485576" redirect="true"/>
+  <file name="result.html" crc="4135310878" seo="true" mt="1531174863037" redirect="true"/>
+</manifest>
