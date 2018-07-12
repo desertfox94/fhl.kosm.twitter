@@ -25,12 +25,12 @@ public class ResultController {
         if (analyser == null) {
             analyser = new HashtagAnalyser(repository);
         }
-        if (selectedHashtags == null || selectedHashtags.trim().isEmpty()) {
-            return null;
-        }
+
         System.out.println(selectedHashtags);
-        List<String> relations = new LinkedList<>();
-        List<AnalyzedHashtag> result = analyser.relations(selectedHashtags.split(","));
+        List<AnalyzedHashtag> result = new LinkedList<>();
+        if (selectedHashtags != null && !selectedHashtags.trim().isEmpty()) {
+            result = analyser.relations(selectedHashtags.replaceAll(" +", ",").split(","));
+        }
         model.addAttribute("hashtags", result);
         return "result";
     }

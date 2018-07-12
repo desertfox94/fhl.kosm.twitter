@@ -43,7 +43,7 @@ public class App implements CommandLineRunner {
 //            }
 //        }
 //        System.out.println(left.size());
-//        new ThreadPoolRunner(left).execute();
+//        new ThreadPoolRunner(tags).execute();
 
 //      load hashtags recursive
 

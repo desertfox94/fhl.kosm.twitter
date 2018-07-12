@@ -1,5 +1,7 @@
 package fhl.kosm.bubblebuster.repositories;
 
+import fhl.kosm.bubblebuster.AlphanumComparator;
+
 import java.util.*;
 import java.util.function.Consumer;
 
@@ -7,13 +9,13 @@ public class MapUtil {
 
     public static <K, V extends Comparable<? super V>> Map<K, V> sortByValueDescending(Map<K, V> map) {
         return sortByValue(map, l -> {
-            l.sort(Map.Entry.comparingByValue());
+            l.sort(new AlphanumComparator());
             Collections.reverse(l);
         });
     }
 
     public static <K, V extends Comparable<? super V>> Map<K, V> sortByValue(Map<K, V> map) {
-        return sortByValue(map, l -> l.sort(Map.Entry.comparingByValue()));
+        return sortByValue(map, l -> l.sort(new AlphanumComparator()));
     }
 
     private static <K, V extends Comparable<? super V>> Map<K, V> sortByValue(Map<K, V> map, Consumer<List> sorting) {

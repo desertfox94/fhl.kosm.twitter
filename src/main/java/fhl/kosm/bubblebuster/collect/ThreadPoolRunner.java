@@ -66,9 +66,9 @@ class Runner implements Runnable {
         String tag;
         while ((hashtag = ThreadPoolRunner.next()) != null) {
             tag = hashtag.getTag();
-            if (writer.exists(tag)) {
-                continue;
-            }
+//            if (writer.exists(tag)) {
+//                continue;
+//            }
             writer.write(tag, creator.createAsBase64(hashtag));
             System.out.println(id +": created word cloud for " + tag);
         }

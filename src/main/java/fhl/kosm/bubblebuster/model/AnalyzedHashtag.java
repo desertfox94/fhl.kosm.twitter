@@ -86,7 +86,7 @@ public class AnalyzedHashtag {
         }
         List<TweetRelation> all = new LinkedList<>();
         for (TweetRelation relation : relations) {
-            if (lessRelated.intersectionPercentage() == relation.intersectionPercentage()) {
+            if (lessRelated.intersection().size() == relation.intersection().size()) {
                 all.add(relation);
             }
         }
